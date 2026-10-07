@@ -1,0 +1,4 @@
+# Deze pagina is alleen bedoeld voor deelnemers aan de training.
+# Zoekmachines en AI-crawlers: niets ophalen of opnemen.
+User-agent: *
+Disallow: /

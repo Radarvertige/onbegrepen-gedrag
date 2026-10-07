@@ -1,0 +1,163 @@
+/*
+ * style.css – alle opmaak van de pagina.
+ *
+ * Leesdossier in RadarVertige-huisstijl (product Agressie & Weerbaarheid):
+ * gebroken wit als ondergrond, neutraal grijs als expertisekleur in volvlakken,
+ * radarlijnen in de kop. Bewust één licht thema: de huisstijl kent alleen
+ * gebroken wit/zwart.
+ *
+ * Opzet: de basis hieronder is de smalle weergave (telefoon, één kolom).
+ * Onderaan staan de aanpassingen per schermbreedte:
+ *   tot 600px      telefoon
+ *   tot 959px      telefoon en tablet staand
+ *   vanaf 960px    tablet liggend en desktop (twee kolommen)
+ *
+ * Indeling:
+ *   1. Huisstijl (kleuren en lettertypes)
+ *   2. Basis
+ *   3. Kopblok
+ *   4. Casusoverzicht: themafilter en inhoudsopgave
+ *   5. Meelopende balk
+ *   6. Casus
+ *   7. Radar
+ *   8. Tekst en foto in een casus
+ *   9. Voettekst
+ *  10. Schermbreedtes
+ */
+
+/* ---------- 1. Huisstijl ---------- */
+:root{
+  --wit:#FFFCF7; --zwart:#2B0039; --aw:#F2F0E7; --geel:#FFD789;   /* --aw = vlakkleur Agressie & Weerbaarheid, --geel = waarschuwing */
+  --muted:rgba(43,0,57,.66); --line:rgba(43,0,57,.16);              /* gedempte tekst en dunne lijnen */
+  --functioneel:"Bagoss", Arial, "Helvetica Neue", sans-serif;      /* knoppen, labels, navigatie */
+  --inhoud:"Tobias", "Times New Roman", Times, serif;               /* koppen en leestekst */
+  color-scheme:light;
+}
+
+/* ---------- 2. Basis ---------- */
+body{background:var(--wit);color:var(--zwart);font-family:var(--inhoud);font-size:1.0625rem;line-height:1.55;letter-spacing:.015em}
+/* .wrap bepaalt de maximale breedte van de hele pagina; .balk-in gebruikt dezelfde maat */
+.wrap{max-width:68rem;margin:0 auto;padding-inline:20px;padding-block:0 4rem}
+/* Nodig voor het themafilter: zonder deze regel wint display:grid van het hidden-attribuut */
+[hidden]{display:none!important}
+h1,h2,h3{text-wrap:balance;margin:0;letter-spacing:0}
+/* Alleen voor schermlezers */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- 3. Kopblok ---------- */
+/* Negatieve marge: het vlak loopt door tot de rand van .wrap */
+header.top{position:relative;overflow:hidden;background:var(--aw);margin-inline:-20px;padding:3rem 20px 2.5rem;display:grid;gap:1rem}
+/* De radarlijnen rechtsonder, achter de tekst */
+header.top svg{position:absolute;right:-260px;bottom:0;width:760px;height:380px;pointer-events:none}
+header.top > *:not(svg){position:relative;max-width:40rem}
+header.top h1{font-family:var(--inhoud);font-weight:400;font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.0}
+header.top p{margin:0;max-width:60ch}
+.meta{font-family:var(--functioneel);font-size:.875rem;letter-spacing:.015em;display:flex;flex-wrap:wrap;gap:.4rem 1.4rem}
+
+/* ---------- 4. Casusoverzicht: themafilter en inhoudsopgave ---------- */
+nav.index{padding-block:2rem;border-bottom:1px solid var(--line);display:grid;gap:1rem}
+.filters{display:flex;flex-wrap:wrap;gap:.5rem}
+.filters button{font-family:var(--functioneel);font-size:.875rem;letter-spacing:.015em;border:1px solid var(--line);background:var(--wit);color:var(--zwart);border-radius:2px;padding:.4rem .8rem;cursor:pointer}
+.filters button:hover{border-color:var(--zwart)}
+/* Het gekozen thema; app.js zet aria-pressed */
+.filters button[aria-pressed="true"]{background:var(--zwart);border-color:var(--zwart);color:var(--wit)}
+.filters button:focus-visible,.toc a:focus-visible{outline:2px solid var(--zwart);outline-offset:2px}
+/* Inhoudsopgave: zoveel kolommen als er passen (minimaal 13rem per kolom) */
+.toc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(13rem,1fr));gap:0 1.5rem;font-family:var(--functioneel);font-size:.9375rem;letter-spacing:.015em}
+.toc a{display:flex;gap:.7rem;padding:.45rem 0;color:var(--zwart);text-decoration:none;border-bottom:1px solid var(--line)}
+.toc a:hover strong{text-decoration:underline;text-underline-offset:3px}
+.toc strong{font-weight:400}
+.toc span{color:var(--muted);font-variant-numeric:tabular-nums;min-width:1.6rem}
+.count{font-family:var(--functioneel);font-size:.875rem;color:var(--muted);margin:0}
+
+/* ---------- 5. Meelopende balk ---------- */
+/* Staat vast bovenin; app.js toont hem zodra het casusoverzicht uit beeld is */
+.balk{position:fixed;inset:0 0 auto 0;z-index:10;background:var(--wit);border-bottom:1px solid var(--line)}
+.balk-in{max-width:68rem;margin:0 auto;padding:.5rem 20px;display:flex;align-items:center;gap:.5rem;font-family:var(--functioneel);font-size:.875rem;letter-spacing:.015em}
+/* "Overzicht" links, de rest schuift naar rechts */
+.balk a{margin-right:auto;color:var(--zwart);white-space:nowrap;text-underline-offset:3px}
+.balk select,.balk button{font:inherit;letter-spacing:inherit;color:var(--zwart);background:var(--wit);border:1px solid var(--line);border-radius:2px;padding:.5rem .7rem}
+.balk select{flex:0 1 20rem;min-width:0}
+.balk button{cursor:pointer;min-width:2.75rem}
+.balk button:hover:not(:disabled),.balk select:hover{border-color:var(--zwart)}
+.balk button:disabled{opacity:.35;cursor:default}
+.balk a:focus-visible,.balk select:focus-visible,.balk button:focus-visible{outline:2px solid var(--zwart);outline-offset:2px}
+
+/* ---------- 6. Casus ---------- */
+/* scroll-margin-top: bij springen naar een casus blijft de kop onder de balk vandaan */
+article.casus{padding-block:3rem;border-bottom:1px solid var(--line);display:grid;gap:1.1rem;scroll-margin-top:3.5rem}
+/* Linkerdeel: kop, tags en radar */
+.casus-top{display:grid;gap:1.25rem}
+.casus-head{display:grid;gap:.55rem}
+.casus-head .eyebrow{font-family:var(--functioneel);font-size:.8125rem;color:var(--muted);letter-spacing:.015em}
+.casus-head h2{font-family:var(--inhoud);font-weight:400;font-size:clamp(2rem,5.5vw,2.6rem);line-height:1.0}
+.casus-head h3{font-family:var(--functioneel);font-weight:400;font-size:1.125rem;line-height:1.25;letter-spacing:.01em}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem}
+.tags span{font-family:var(--functioneel);font-size:.75rem;letter-spacing:.015em;padding:.2rem .55rem;border:1px solid var(--line);border-radius:2px}
+article.casus p{margin:0;max-width:65ch}
+/* Kernblok onder elke casus */
+.kern{margin-top:.5rem;background:var(--aw);padding:1.25rem 1.35rem;display:grid;gap:.5rem}
+.kern b{font-family:var(--functioneel);font-weight:600;font-size:.8125rem;letter-spacing:.015em}
+.kern p{font-size:1.125rem;line-height:1.45}
+/* Gele waarschuwing boven een casus met heftige inhoud (veld cw in casussen.js) */
+.cw{font-family:var(--functioneel);font-size:.875rem;line-height:1.4;background:var(--geel);padding:.6rem .8rem}
+
+/* ---------- 7. Radar ---------- */
+/* De tekening met legenda; het SVG zelf maakt app.js (radarSVG en legenda) */
+.radar{display:flex;align-items:flex-end;gap:1.25rem;flex-wrap:wrap}
+.radar svg{width:150px;height:auto;flex:none;overflow:visible}
+.radar ul{list-style:none;margin:0;padding:0;display:grid;gap:.15rem;font-family:var(--functioneel);font-size:.8125rem;line-height:1.3;letter-spacing:.015em}
+.radar li{display:flex;align-items:center;gap:.5rem}
+.radar li i{display:inline-block;width:18px;border-top:1.5px solid var(--zwart)}
+/* .uit = deze problematiek speelt niet in de casus */
+.radar li.uit{color:var(--muted)}
+.radar li.uit i{border-top:1px dashed var(--line)}
+.radar li b{font-weight:400;font-variant-numeric:tabular-nums;min-width:3.2rem}
+/* De grote radar bovenaan ("Stapeling van problemen") */
+.overzicht{padding-block:2rem 0;display:grid;gap:1rem}
+.overzicht h2{font-family:var(--inhoud);font-weight:400;font-size:1.6rem;line-height:1.0}
+.overzicht p{margin:0;max-width:62ch}
+.overzicht .radar svg{width:220px}
+
+/* ---------- 8. Tekst en foto in een casus ---------- */
+/* flow-root: de zwevende foto blijft binnen het tekstblok */
+.body{display:flow-root}
+.body p + p,.body figure.rond + p{margin-top:1rem}
+.body .cw{margin-bottom:1.1rem}
+/* Ronde foto waar de tekst omheen loopt; .r = rechts, .l = links */
+figure.rond{width:12rem;margin:.4rem 0 1rem;shape-outside:circle(50%);shape-margin:1.25rem}
+figure.rond.r{float:right;margin-left:1.5rem}
+figure.rond.l{float:left;margin-right:1.5rem}
+figure.rond img{display:block;width:100%;max-width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;background:var(--aw)}
+
+/* ---------- 9. Voettekst ---------- */
+footer{padding-top:2.5rem;font-family:var(--functioneel);font-size:.875rem;line-height:1.45;letter-spacing:.015em;color:var(--muted);display:grid;gap:.75rem}
+footer strong{color:var(--zwart);font-weight:600}
+
+/* ---------- 10. Schermbreedtes ---------- */
+
+/* Telefoon: foto gecentreerd tussen de alinea's in plaats van ernaast */
+@media (max-width:600px){figure.rond.r,figure.rond.l{float:none;margin:.5rem auto 1.25rem;width:14rem}}
+
+/* Breed scherm: kop en radar links, tekst en kernblok rechts */
+@media (min-width:960px){
+  .wrap,.balk-in{padding-inline:40px}
+  header.top{margin-inline:-40px;padding:4rem 40px 3rem}
+  header.top svg{right:-120px}
+  article.casus{grid-template-columns:19rem minmax(0,1fr);column-gap:4rem}
+  .casus-top{grid-column:1;grid-row:1 / span 2;align-self:start}
+  .body,.kern{grid-column:2}
+  article.casus p{max-width:none}
+}
+/* De linkerkolom loopt mee tijdens het lezen, alleen als het scherm hoog genoeg is */
+@media (min-width:960px) and (min-height:700px){.casus-top{position:sticky;top:4.5rem}}
+
+/* Telefoon en tablet: radarlijnen lopen achter de tekst, dus lichter en op telefoon kleiner */
+@media (max-width:959px){header.top svg{opacity:.4}}
+@media (max-width:600px){header.top svg{width:520px;height:260px;right:-280px}}
+
+/* Aanraakscherm: knoppen en links groot genoeg voor een vinger */
+@media (pointer:coarse){.filters button{padding:.65rem .9rem}.toc a{padding:.7rem 0}}
+
+/* Vloeiend scrollen, behalve als de lezer beweging heeft uitgezet */
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}

@@ -1,3 +1,7 @@
+# Zet de site online op https://radarvertige.github.io/onbegrepen-gedrag/
+# Draait bij elke push naar main (dus ook na scripts/publish.js), of handmatig via het tabblad Actions.
+# Alleen de inhoud van public/ wordt gepubliceerd; docs/, scripts/, server.js en de rest komen niet op de site.
+# Voorwaarde: in Settings > Pages staat Source op "GitHub Actions".
 name: Publiceer naar GitHub Pages
 
 on:
@@ -23,8 +27,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      # Controleert de site en zet hem klaar in dist/; bij een fout stopt de publicatie
+      - run: node scripts/build.js
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: dist
       - id: deployment
         uses: actions/deploy-pages@v4

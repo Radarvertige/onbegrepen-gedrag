@@ -1,0 +1,7 @@
+/*
+ * fonts.css – de twee huisstijl-lettertypes. De bestanden staan in ../fonts/.
+ * Bagoss: knoppen, labels en navigatie (--functioneel in style.css)
+ * Tobias: koppen en leestekst (--inhoud in style.css)
+ */
+@font-face{font-family:"Bagoss";src:url("../fonts/bagoss.woff2") format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Tobias";src:url("../fonts/tobias.woff2") format("woff2");font-weight:400;font-display:swap}
