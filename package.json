@@ -1,0 +1,9 @@
+{
+  "name": "onbegrepen-gedrag-casussen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Werkplekopdracht training Onbegrepen gedrag - RadarVertige",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": "20.x" }
+}
